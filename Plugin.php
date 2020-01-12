@@ -58,7 +58,7 @@ class Plugin extends Base
 
     public function getPluginHomepage()
     {
-        return 'https://github.com/kanboard/plugin-gogs-webhook';
+        return 'https://github.com/schintgenj/kanboard-giteawebhook';
     }
 
     public function getCompatibleVersion()
