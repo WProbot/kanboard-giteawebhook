@@ -169,7 +169,7 @@ class WebhookHandler extends Base
      */
     public function handleIssueOpened(array $issue, array $repo)
     {
-        $task_reference = $repo['full_name']."#".$issue['id'];
+        $task_reference = $repo['full_name']."#".$issue['number'];
         $description = $issue['body'];
         $description .= "\n\n[".t('Gitea Issue').']('.$issue['html_url'].')';
         $event = array(
@@ -196,7 +196,7 @@ class WebhookHandler extends Base
      */
     public function handleIssueReopened(array $issue, array $repo)
     {
-        $task_reference = $repo['full_name']."#".$issue['id'];
+        $task_reference = $repo['full_name']."#".$issue['number'];
         $task = $this->taskFinderModel->getByReference($this->project_id, $task_reference);
         if (! empty($task)) {
             $event = array(
@@ -224,7 +224,7 @@ class WebhookHandler extends Base
      */
     public function handleIssueClosed(array $issue, array $repo)
     {
-        $task_reference = $repo['full_name']."#".$issue['id'];
+        $task_reference = $repo['full_name']."#".$issue['number'];
         $task = $this->taskFinderModel->getByReference($this->project_id, $task_reference);
         if (! empty($task)) {
             $event = array(
@@ -253,7 +253,7 @@ class WebhookHandler extends Base
      */
     public function handleIssueAssigned(array $issue, array $repo)
     {
-        $task_reference = $repo['full_name']."#".$issue['id'];
+        $task_reference = $repo['full_name']."#".$issue['number'];
         $user = $this->userModel->getByUsername($issue['assignee']['login']);
         $task = $this->taskFinderModel->getByReference($this->project_id, $task_reference);
         if (! empty($user) && ! empty($task) && $this->projectPermissionModel->isAssignable($this->project_id, $user['id'])) {
@@ -281,7 +281,7 @@ class WebhookHandler extends Base
      */
     public function handleIssueUnassigned(array $issue, array $repo)
     {
-        $task_reference = $repo['full_name']."#".$issue['id'];
+        $task_reference = $repo['full_name']."#".$issue['number'];
         $task = $this->taskFinderModel->getByReference($this->project_id, $task_reference);
         if (! empty($task)) {
             $event = array(
@@ -311,7 +311,7 @@ class WebhookHandler extends Base
         if (! isset($payload['issue'])) {
             return false;
         }
-        $task_reference = $payload['repository']['full_name']."#".$payload['issue']['id'];
+        $task_reference = $payload['repository']['full_name']."#".$payload['issue']['number'];
         $task = $this->taskFinderModel->getByReference($this->project_id, $task_reference);
         if (! empty($task)) {
             $user = $this->userModel->getByUsername($payload['user']['username']);
