@@ -169,9 +169,14 @@ class WebhookHandler extends Base
      */
     public function handleIssueOpened(array $issue, array $repo)
     {
+        if (isset($issue['html_url'])) {
+          $issue_url = $issue['html_url'];
+        } else {
+          $issue_url = str_replace('api/v1/repos/','',$issue['url']);
+        } 
         $task_reference = $repo['full_name']."#".$issue['number'];
         $description = $issue['body'];
-        $description .= "\n\n[".t('Gitea Issue').']('.$issue['html_url'].')';
+        $description .= "\n\n[".t('Gitea Issue').']('.$issue_url.')';
         $event = array(
             'project_id' => $this->project_id,
             'reference' => $task_reference,
